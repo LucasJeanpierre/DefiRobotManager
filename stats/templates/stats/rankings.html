@@ -1,0 +1,9 @@
+{% extends 'stats/base.html' %}
+
+
+{% block content %}
+
+{% for ranking in content.rankings %}
+    <p>{{ ranking.rank }} : {{ ranking.team.name }} avec {{ ranking.score }} points</p>
+{% endfor %}
+{% endblock %}
