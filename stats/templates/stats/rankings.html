@@ -1,30 +1,30 @@
 {% extends 'stats/base.html' %}
 
 
-
-
 {% block content %}
 
-<div class="podium__container podium">
-    <div class="podium__item">
-        <p class="podium__city">{{content.rankings.1.team.name}}</p>
-        <div class="podium__rank second">2</div>
+<div class="container">
+    <div class="podium__container podium">
+        <div class="podium__item">
+            <p class="podium__city">{{content.rankings.1.team.name}}</p>
+            <div class="podium__rank second">2</div>
+        </div>
+        <div class="podium__item">
+            <p class="podium__city">{{content.rankings.0.team.name}}</p>
+            <div class="podium__rank first">1</div>
+        </div>
+        <div class="podium__item">
+            <p class="podium__city">{{content.rankings.2.team.name}}</p>
+            <div class="podium__rank third">3</div>
+        </div>
     </div>
-    <div class="podium__item">
-        <p class="podium__city">{{content.rankings.0.team.name}}</p>
-        <div class="podium__rank first">1</div>
+
+    <div class="ranking">
+        {% for ranking in content.rankings %}
+            <p>{{ ranking.rank }} : {{ ranking.team.name }} avec {{ ranking.score }} points et un temsp de {{ ranking.time }}</p>
+        {% endfor %}
     </div>
-    <div class="podium__item">
-        <p class="podium__city">{{content.rankings.2.team.name}}</p>
-        <div class="podium__rank third">3</div>
-    </div>
+
 </div>
 
-<div class="ranking">
-    {% for ranking in content.rankings %}
-        {% if ranking.rank > 3 %}
-        <p>{{ ranking.rank }} : {{ ranking.team.name }} avec {{ ranking.score }} points et un temsp de {{ ranking.time }}</p>
-        {% endif %}
-    {% endfor %}
-</div>
 {% endblock %}

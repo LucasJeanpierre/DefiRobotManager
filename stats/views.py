@@ -139,7 +139,6 @@ def institutionRankings(request):
         avg_score = 0
         avg_time = 0
         for score in institution.scores:
-            print(institution, score)
             avg_score += score["score"]
             avg_time += score["time"]
         avg_score /= len(institution.scores)

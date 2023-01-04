@@ -3,26 +3,28 @@
 
 {% block content %}
 
-<div class="podium__container podium">
-    <div class="podium__item">
-        <p class="podium__city">{{institutionRankings.1.institution.name}}</p>
-        <div class="podium__rank second">2</div>
+<div class="container">
+    <div class="podium__container podium">
+        <div class="podium__item">
+            <p class="podium__city">{{institutionRankings.1.institution.name}}</p>
+            <div class="podium__rank second">2</div>
+        </div>
+        <div class="podium__item">
+            <p class="podium__city">{{institutionRankings.0.institution.name}}</p>
+            <div class="podium__rank first">1</div>
+        </div>
+        <div class="podium__item">
+            <p class="podium__city">{{institutionRankings.2.institution.name}}</p>
+            <div class="podium__rank third">3</div>
+        </div>
     </div>
-    <div class="podium__item">
-        <p class="podium__city">{{institutionRankings.0.institution.name}}</p>
-        <div class="podium__rank first">1</div>
+
+    <div class="ranking">
+        {% for institutionRanking in institutionRankings %}
+            <p>{{ institutionRanking.rank }} : {{ institutionRanking.institution.name }} avec une moyenne de {{ institutionRanking.avg_score }} points et {{ institutionRanking.avg_time }} s </p>
+        {% endfor %}
     </div>
-    <div class="podium__item">
-        <p class="podium__city">{{institutionRankings.2.institution.name}}</p>
-        <div class="podium__rank third">3</div>
-    </div>
+
 </div>
 
-<div class="ranking">
-{% for institutionRanking in institutionRankings %}
-    {% if institutionRanking.rank > 3 %}
-        <p>{{ institutionRanking.rank }} : {{ institutionRanking.institution.name }} avec une moyenne de {{ institutionRanking.avg_score }} points et {{ institutionRanking.avg_time }} s </p>
-    {% endif %}
-{% endfor %}
-</div>
 {% endblock %}
