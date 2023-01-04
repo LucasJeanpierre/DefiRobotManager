@@ -33,10 +33,13 @@ body {
 .podium__city {
     text-align: center;
     overflow: hidden;
-    padding: 0 .5rem;
     white-space: nowrap;
     margin: 0 auto;
     letter-spacing: .15em;
+    visibility: hidden;
+}
+
+.podium__city-animation {
     animation: typing 2s steps(40, end);
 }
 
@@ -45,7 +48,7 @@ body {
         width: 0
     }
     to {
-        width: 90%
+        width: 100%
     }
 }
 
