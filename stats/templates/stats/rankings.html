@@ -4,6 +4,6 @@
 {% block content %}
 
 {% for ranking in content.rankings %}
-    <p>{{ ranking.rank }} : {{ ranking.team.name }} avec {{ ranking.score }} points</p>
+    <p>{{ ranking.rank }} : {{ ranking.team.name }} avec {{ ranking.score }} points et un temsp de {{ ranking.time }}</p>
 {% endfor %}
 {% endblock %}
