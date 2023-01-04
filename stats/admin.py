@@ -17,10 +17,10 @@ class TeamAdmin(admin.ModelAdmin):
     list_filter = ('name', 'institution')
 
 class RunAdmin(admin.ModelAdmin):
+    fields = ('num_run', 'team', 'time', 'score',)
     list_display = ('team', 'time', 'score', 'num_run')
     list_filter = ('team', 'time', 'score', 'num_run')
     ordering = ('-score', '-time', '-num_run')
-
 
 admin.site.register(Institution, InstitutionAdmin)
 admin.site.register(AesteticScores, AesteticScoresAdmin)

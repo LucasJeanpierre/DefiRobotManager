@@ -10,14 +10,9 @@ def index(request):
     message = "Hello, world. You're at the stats index."
     return render(request, template_name='stats/index.html', context={'message': message})
 
-def rankings(request):
-    #get all institutions
-    institutions = Institution.objects.all()
-    #get all teams
-    teams = Team.objects.all()
-    #get all aestetic scores
-    aestetic_scores = AesteticScores.objects.all()
 
+
+def getScores():
     #get the max number of runs
     max_num_runs = Run.objects.aggregate(Max('num_run'))['num_run__max']
 
@@ -31,51 +26,79 @@ def rankings(request):
         #for each runs add the bonus time
         for i, run in enumerate(runs):
             if (run.score == 160) and (i < 8):
-                scores.append([run.team.id, run.score + 40 - i*5, run.time])
+                scores.append({"team" : run.team, "score" : run.score + 40 - i*5, "time" : run.time})
             else:
-                scores.append([run.team.id, run.score, run.time])
-
+                scores.append({"team" : run.team, "score" : run.score, "time" : run.time})
 
         scores_list.append(scores)
+
+   
+
+    return scores_list
+
+  
+
+def getRankings():
+
+    scores_list = getScores()
+
+    #get all teams
+    teams = Team.objects.all()
 
     #keep only the best score for each team
 
     best_scores = []
     
     for team in teams:
-        best_score = 0
-        best_time = 999
+        best_score = -1
+        best_time = 1000
         found = False
         for scores in scores_list:
             for score in scores:
-                if score[0] == team.id:
-                    if score[1] > best_score or (score[1] == best_score and score[2] < best_time):
-                        best_score = score[1]
-                        best_time = score[2]
+                if score["team"].id == team.id:
+                    if score["score"] > best_score or (score["score"] == best_score and score["time"] < best_time):
+                        best_score = score["score"]
+                        best_time = score["time"]
                         found = True
                     break
         if found:
-            best_scores.append([team.id, best_score, best_time])
+            best_scores.append({"team": team, "score" : best_score, "time" : best_time})
 
+    aestetic_scores = AesteticScores.objects.all()
 
     #add the aestetic scores
     for aestetic_score in aestetic_scores:
         for score in best_scores:
-            if aestetic_score.first_rank.id == score[0]:
-                score[1] += 10
-            if aestetic_score.second_rank.id == score[0]:
-                score[1] += 5
-            if aestetic_score.third_rank.id == score[0]:
-                score[1] += 2
+            if aestetic_score.first_rank.id == score["team"].id:
+                score["score"] += 10
+            if aestetic_score.second_rank.id == score["team"].id:
+                score["score"] += 5
+            if aestetic_score.third_rank.id == score["team"].id:
+                score["score"] += 2
 
     
     #sort the scores by score reversed and time not reversed
-    best_scores.sort(key=lambda x: (x[1], -x[2]), reverse=True)
+    best_scores.sort(key=lambda x: (x["score"], -x["time"]), reverse=True)
 
     rankings = []
     #create a list of the rankings
     for score in best_scores:
-        rankings.append({"team": Team.objects.get(id=score[0]), "score": score[1], "time": score[2], "rank": best_scores.index(score)+1})
+        rankings.append({"team": Team.objects.get(id=score['team'].id), "score": score['score'], "time": score['time'], "rank": best_scores.index(score)+1})
+
+    return rankings
+
+def rankings(request):
+    #get all institutions
+    institutions = Institution.objects.all()
+    #get all teams
+    teams = Team.objects.all()
+    #get all aestetic scores
+    aestetic_scores = AesteticScores.objects.all()
+    #get all runs
+    runs = Run.objects.all()
+    
+    #get rankings
+    rankings = getRankings()
 
     #print(rankings)
 
@@ -83,3 +106,51 @@ def rankings(request):
     content = {"institution": institutions, "team": teams, "aestetic_scores": aestetic_scores, "run": runs, "rankings": rankings}
 
     return render(request, 'stats/rankings.html', {'content': content})
+
+
+
+def institutionRankings(request):
+    institutions = Institution.objects.all()
+
+    scores_list = getScores()
+
+    for institution in institutions:
+        institution.scores = []
+        institution.team = {}
+        for scores in scores_list:
+            for score in scores:
+                if score["team"].institution.id == institution.id:
+                    institution.scores.append(score)
+                    if institution.team.get(score["team"].id) == None:
+                        institution.team[score["team"].id] = 1
+                    else:
+                        institution.team[score["team"].id] += 1
+        
+        #check if all the teams have the same number of runs
+        if len(institution.team) > 0:
+            for team in institution.team:
+                if institution.team[team] == 1:
+                    institution.scores.append({"team" : Team.objects.get(id=team), "score" : 0, "time" : 999})
+
+    
+    institutionRankings = []
+
+    for institution in institutions:
+        avg_score = 0
+        avg_time = 0
+        for score in institution.scores:
+            print(institution, score)
+            avg_score += score["score"]
+            avg_time += score["time"]
+        avg_score /= len(institution.scores)
+        avg_time /= len(institution.scores)
+        institutionRankings.append({"institution": institution, "avg_score": avg_score, "avg_time": avg_time})
+
+    institutionRankings.sort(key=lambda x: (-x["avg_score"], x["avg_time"]))
+
+    for i, institution in enumerate(institutionRankings):
+        institution["rank"] = i+1
+
+
+
+    return render(request, 'stats/institutionsRanking.html', {'institutionRankings': institutionRankings})

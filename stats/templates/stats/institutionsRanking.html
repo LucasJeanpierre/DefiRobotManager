@@ -1,0 +1,9 @@
+{% extends 'stats/base.html' %}
+
+
+{% block content %}
+
+{% for institutionRanking in institutionRankings %}
+    <p>{{ institutionRanking.rank }} : {{ institutionRanking.institution.name }} avec une moyenne de {{ institutionRanking.avg_score }} points et {{ institutionRanking.avg_time }} s </p>
+{% endfor %}
+{% endblock %}
