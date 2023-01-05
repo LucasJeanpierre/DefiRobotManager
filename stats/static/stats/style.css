@@ -11,8 +11,10 @@ body {
 }
 
 
+
 .podium__container {
-    display: inline-flex;
+    margin-top: 10%;
+    display: flex;
     align-items: flex-end;
     justify-content: center;
     width: 100%;

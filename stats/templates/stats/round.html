@@ -1,0 +1,18 @@
+{% extends 'stats/base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    
+    <h1>Round {{round}}</h1>
+
+    <div class="ranking">
+        {% for ranking in scores %}
+            <p>{{ ranking.rank }} : {{ ranking.team.name }} avec {{ ranking.score }} points et un temsp de {{ ranking.time }}</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

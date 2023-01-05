@@ -7,8 +7,7 @@ from .models import Institution, Team, AesteticScores, Run
 # Create your views here.
 
 def index(request):
-    message = "Hello, world. You're at the stats index."
-    return render(request, template_name='stats/index.html', context={'message': message})
+    return render(request, 'stats/index.html')
 
 
 
@@ -153,3 +152,16 @@ def institutionRankings(request):
 
 
     return render(request, 'stats/institutionsRanking.html', {'institutionRankings': institutionRankings})
+
+
+def round(request):
+    scores = getScores()
+
+    #GET parameters
+    round = request.GET.get('round', 1)
+
+    #add the rank
+    for i, score in enumerate(scores[int(round)-1]):
+        score["rank"] = i+1
+
+    return render(request, 'stats/round.html', {'scores': scores[int(round)-1], 'round': round})

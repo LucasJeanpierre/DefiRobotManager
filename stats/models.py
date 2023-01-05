@@ -34,7 +34,7 @@ class Run(models.Model):
     # id = models.IntegerField(primary_key=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     time = models.FloatField(default=999)
-    num_run = models.IntegerField(default=1)
+    num_run = models.IntegerField()
     score = models.IntegerField(default=0)
 
     def __str__(self):
