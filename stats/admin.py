@@ -13,8 +13,8 @@ class AesteticScoresAdmin(admin.ModelAdmin):
     list_filter = ('institution', 'first_rank', 'second_rank', 'third_rank')
 
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('name', 'institution')
-    list_filter = ('name', 'institution')
+    list_display = ('name', 'institution', 'order')
+    list_filter = ('name', 'institution', 'order')
 
 class RunAdmin(admin.ModelAdmin):
     fields = ('num_run', 'team', 'time', 'score',)

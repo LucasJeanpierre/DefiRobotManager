@@ -14,6 +14,7 @@ class Team(models.Model):
     # id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=200)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
+    order = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

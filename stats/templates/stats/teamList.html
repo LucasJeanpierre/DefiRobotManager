@@ -1,0 +1,97 @@
+{% extends 'stats/base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <h1>Team Order</h1>
+
+    <div>
+        <table>
+            <tr>
+                <th>Order</th>
+                <th>Team</th>
+                <th>Institution</th>
+                <th><a href="/stats/round/?round=1">Round 1</a></th>
+                <th><a href="/stats/round/?round=2">Round 2</a></th>
+            </tr>
+            {% for team in content.teams %}
+            <tr>
+                <td>{{ team.order }}</td>
+                <td>{{ team.name }}</td>
+                <td>{{ team.institution.name }}</td>
+                <td>
+                    {% if team.runs.0 %}
+                    <form action="/admin/stats/run/{{ team.runs.0.id }}/change/" target="_blank">
+                        <input type="submit" value="{{ team.runs.0.time }} | {{ team.runs.0.score }}">
+                    </form>
+                    {% else %}
+                    <form action="/admin/stats/run/add/" target="_blank">
+                        <input type="hidden" name="team" value="{{ team.id }}">
+                        <input type="hidden" name="num_run" value="1">
+                        <input type="submit" value="Add run">
+                    </form>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if team.runs.1 %}
+                    <form action="/admin/stats/run/{{ team.runs.1.id }}/change/" target="_blank">
+                        <input type="submit" value="{{ team.runs.1.time }} | {{ team.runs.1.score }}">
+                    </form>
+                    {% else %}
+                    <form action="/admin/stats/run/add/" target="_blank">
+                        <input type="hidden" name="team" value="{{ team.id }}">
+                        <input type="hidden" name="num_run" value="2">
+                        <input type="submit" value="Add run">
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+    <form action="/stats/rankings/" method="get">
+        <input type="submit" value="Rankings">
+    </form>
+
+    <form action="/stats/institutionRankings/" method="get">
+        <input type="submit" value="Institution Rankings">
+    </form>
+
+    <form id="form_order" action="/stats/generateOrder/" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Generate Order">
+    </form>
+
+
+
+</div>
+
+
+<script>
+    var previousVisibilityState = "visible";
+    //confirmation message before generate new order
+    var form = document.getElementById('form_order');
+    form.addEventListener('submit', function (event) {
+        var confirmation = confirm("Are you sure you want to generate a new order?");
+        if (!confirmation) {
+            event.preventDefault();
+        } else {
+            refresh = 1;
+        }
+    });
+
+    //event when user refocus on the page
+    document.onvisibilitychange = function () {
+        if ((document.visibilityState == 'visible') && (previousVisibilityState == "hidden")) {
+            location.reload();
+        }
+        previousVisibilityState = document.visibilityState;
+    }
+</script>
+
+
+{% endblock %}

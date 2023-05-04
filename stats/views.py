@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Max
+import random
 
 from .models import Institution, Team, AesteticScores, Run
 
@@ -8,7 +9,6 @@ from .models import Institution, Team, AesteticScores, Run
 
 def index(request):
     return render(request, 'stats/index.html')
-
 
 
 def getScores():
@@ -165,3 +165,43 @@ def round(request):
         score["rank"] = i+1
 
     return render(request, 'stats/round.html', {'scores': scores[int(round)-1], 'round': round})
+
+
+def generateOrder(request):
+    #if the request is a POST request
+    if request.method == 'POST':
+        #get all teams
+        teams = Team.objects.all()
+
+        order = [i for i in range(1, len(teams)+1)]
+        random.shuffle(order)
+
+        for i, team in enumerate(teams):
+            team.order = order[i]
+            team.save()
+        
+        return redirect('/stats/teamList')
+    
+    #return an error 500
+    return HttpResponse("Method not allowed",status=500)
+
+
+def teamList(request):
+    #get all teams
+    teams = Team.objects.all().order_by('order')
+
+    #get all runs
+    runs = Run.objects.all()
+
+    #link each team to its runs
+    for team in teams:
+        team.runs = []
+        for run in runs:
+            if run.team.id == team.id:
+                team.runs.append(run)
+
+    content = {"teams": teams}
+
+    return render(request, 'stats/teamList.html', {'content': content})
+
+    
