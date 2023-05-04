@@ -24,26 +24,26 @@
                 <td>
                     {% if team.runs.0 %}
                     <form action="/admin/stats/run/{{ team.runs.0.id }}/change/" target="_blank">
-                        <input type="submit" value="{{ team.runs.0.time }} | {{ team.runs.0.score }}">
+                        <input type="submit" style="background-color:green;" value="{{ team.runs.0.time }} | {{ team.runs.0.score }}">
                     </form>
                     {% else %}
                     <form action="/admin/stats/run/add/" target="_blank">
                         <input type="hidden" name="team" value="{{ team.id }}">
                         <input type="hidden" name="num_run" value="1">
-                        <input type="submit" value="Add run">
+                        <input type="submit" style="background-color:red;" value="Add run">
                     </form>
                     {% endif %}
                 </td>
                 <td>
                     {% if team.runs.1 %}
                     <form action="/admin/stats/run/{{ team.runs.1.id }}/change/" target="_blank">
-                        <input type="submit" value="{{ team.runs.1.time }} | {{ team.runs.1.score }}">
+                        <input type="submit" style="background-color:green;" value="{{ team.runs.1.time }} | {{ team.runs.1.score }}">
                     </form>
                     {% else %}
                     <form action="/admin/stats/run/add/" target="_blank">
                         <input type="hidden" name="team" value="{{ team.id }}">
                         <input type="hidden" name="num_run" value="2">
-                        <input type="submit" value="Add run">
+                        <input type="submit" style="background-color:red;" value="Add run">
                     </form>
                     {% endif %}
                 </td>
