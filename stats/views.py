@@ -82,7 +82,18 @@ def getRankings():
     rankings = []
     #create a list of the rankings
     for score in best_scores:
-        rankings.append({"team": Team.objects.get(id=score['team'].id), "score": score['score'], "time": score['time'], "rank": best_scores.index(score)+1})
+        ranking = {"team": Team.objects.get(id=score['team'].id), "score": score['score'], "time": score['time']}
+
+        #handle ex aequo
+        if len(rankings) > 0:
+            if ranking["score"] == rankings[-1]["score"] and ranking["time"] == rankings[-1]["time"]:
+                ranking["rank"] = rankings[-1]["rank"]
+            else:
+                ranking["rank"] = len(rankings) + 1
+        else:
+            ranking["rank"] = 1
+        
+        rankings.append(ranking)
 
     return rankings
 
@@ -140,15 +151,27 @@ def institutionRankings(request):
         for score in institution.scores:
             avg_score += score["score"]
             avg_time += score["time"]
-        avg_score /= len(institution.scores)
-        avg_time /= len(institution.scores)
+        
+        if len(institution.scores) > 0:
+            avg_score /= len(institution.scores)
+            avg_time /= len(institution.scores)
+        else:
+            avg_score = 0
+            avg_time = 999
+        
         institutionRankings.append({"institution": institution, "avg_score": avg_score, "avg_time": avg_time})
 
     institutionRankings.sort(key=lambda x: (-x["avg_score"], x["avg_time"]))
 
     for i, institution in enumerate(institutionRankings):
-        institution["rank"] = i+1
 
+        if i > 0:
+            if institution["avg_score"] == institutionRankings[i-1]["avg_score"] and institution["avg_time"] == institutionRankings[i-1]["avg_time"]:
+                institution["rank"] = institutionRankings[i-1]["rank"]
+            else:
+                institution["rank"] = i+1
+        else:
+            institution["rank"] = 1
 
 
     return render(request, 'stats/institutionsRanking.html', {'institutionRankings': institutionRankings})
@@ -175,7 +198,11 @@ def aesteticRankings(request):
     aestetic_rankings.sort(key=lambda x: x["score"], reverse=True)
 
     for i, aestetic_ranking in enumerate(aestetic_rankings):
-        aestetic_ranking["rank"] = i+1
+        #handle ex aequo
+        if i > 0 and aestetic_ranking["score"] == aestetic_rankings[i-1]["score"]:
+            aestetic_ranking["rank"] = aestetic_rankings[i-1]["rank"]
+        else:
+            aestetic_ranking["rank"] = i+1
 
 
     return render(request, 'stats/aesteticRanking.html', {'aestetic_rankings': aestetic_rankings})
