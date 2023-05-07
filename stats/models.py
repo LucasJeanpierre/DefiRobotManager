@@ -17,7 +17,7 @@ class Team(models.Model):
     order = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return self.name + " " + self.institution.name
 
 
 class AesteticScores(models.Model):

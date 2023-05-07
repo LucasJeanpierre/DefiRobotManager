@@ -9,7 +9,7 @@
 
     <div class="ranking">
         {% for ranking in scores %}
-            <p>{{ ranking.rank }} : {{ ranking.team.name }} avec {{ ranking.score }} points et un temsp de {{ ranking.time }}</p>
+            <p>{{ ranking.rank }} : {{ ranking.team }} avec {{ ranking.score }} points et un temsp de {{ ranking.time }}</p>
         {% endfor %}
     </div>
 

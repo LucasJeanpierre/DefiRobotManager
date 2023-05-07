@@ -154,6 +154,34 @@ def institutionRankings(request):
     return render(request, 'stats/institutionsRanking.html', {'institutionRankings': institutionRankings})
 
 
+def aesteticRankings(request):
+    aestetic_scores = AesteticScores.objects.all()
+
+    teams = Team.objects.all()
+
+    aestetic_rankings = {}
+
+    for team in teams:
+        aestetic_rankings.update({team.id: {"team": team, "score": 0}})
+        
+
+    for aestetic_score in aestetic_scores:
+        aestetic_rankings[aestetic_score.first_rank.id]["score"] += 10
+        aestetic_rankings[aestetic_score.second_rank.id]["score"] += 5
+        aestetic_rankings[aestetic_score.third_rank.id]["score"] += 2
+
+    aestetic_rankings = list(aestetic_rankings.values())
+
+    aestetic_rankings.sort(key=lambda x: x["score"], reverse=True)
+
+    for i, aestetic_ranking in enumerate(aestetic_rankings):
+        aestetic_ranking["rank"] = i+1
+
+
+    return render(request, 'stats/aesteticRanking.html', {'aestetic_rankings': aestetic_rankings})
+
+
+
 def round(request):
     scores = getScores()
 
