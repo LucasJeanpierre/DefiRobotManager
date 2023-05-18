@@ -31,8 +31,6 @@ def getScores():
 
         scores_list.append(scores)
 
-   
-
     return scores_list
 
   

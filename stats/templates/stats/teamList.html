@@ -24,27 +24,28 @@
                 <td>
                     {% if team.runs.0 %}
                     <form action="/admin/stats/run/{{ team.runs.0.id }}/change/" target="_blank">
-                        <input type="submit" style="background-color:green;" value="{{ team.runs.0.time }} | {{ team.runs.0.score }}">
+                        <input type="submit" style="background-color:green;"
+                            value="{{ team.runs.0.time }} | {{ team.runs.0.score }}">
                     </form>
                     {% else %}
-                    <form action="/admin/stats/run/add/" target="_blank">
-                        <input type="hidden" name="team" value="{{ team.id }}">
-                        <input type="hidden" name="num_run" value="1">
-                        <input type="submit" style="background-color:red;" value="Add run">
-                    </form>
+                    <button style="background-color:red;" onclick="showModal(event)" data-team-id="{{ team.id }}"
+                        data-team-name="{{team }}" data-run=1>Add run</button>
                     {% endif %}
                 </td>
                 <td>
                     {% if team.runs.1 %}
                     <form action="/admin/stats/run/{{ team.runs.1.id }}/change/" target="_blank">
-                        <input type="submit" style="background-color:green;" value="{{ team.runs.1.time }} | {{ team.runs.1.score }}">
+                        <input type="submit" style="background-color:green;"
+                            value="{{ team.runs.1.time }} | {{ team.runs.1.score }}">
                     </form>
                     {% else %}
-                    <form action="/admin/stats/run/add/" target="_blank">
+                    <!-- <form action="/admin/stats/run/add/" target="_blank">
                         <input type="hidden" name="team" value="{{ team.id }}">
                         <input type="hidden" name="num_run" value="2">
                         <input type="submit" style="background-color:red;" value="Add run">
-                    </form>
+                    </form> -->
+                    <button style="background-color:red;" onclick="showModal(event)" data-team-id="{{ team.id }}"
+                        data-team-name="{{team }}" data-run=2>Add run</button>
                     {% endif %}
                 </td>
             </tr>
@@ -66,23 +67,46 @@
         <input type="submit" value="Generate Order">
     </form>
 
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <form action="/admin/stats/run/add/" method="post" id="addRun_form">
+                {% csrf_token %}
+                <span class="close">&times;</span>
+                <label for="team_name">Team name</label>
+                <input type="text" name="team_name" id="form_team_name" disabled value="">
+                <input type="hidden" name="team" id="form_team" value="">
+                <label for="run">Run</label>
+                <input type="number" name="num_run" id="form_run" disabled value="">
+                <label for="score">Score</label>
+                <input type="number" name="score" id="form_score" value="">
+                <label for="time">Time</label>
+                <input type="number" step="0.01" name="time" id="form_time" value="">
+                <!-- <button onclick="addRun(event)">Add run</button> -->
+                <input type="submit" value="Add run">
+            </form>
+        </div>
+
+    </div>
+
 
 
 </div>
 
 
 <script>
-    var previousVisibilityState = "visible";
-    //confirmation message before generate new order
-    var form = document.getElementById('form_order');
-    form.addEventListener('submit', function (event) {
-        var confirmation = confirm("Are you sure you want to generate a new order?");
-        if (!confirmation) {
-            event.preventDefault();
-        } else {
-            refresh = 1;
-        }
-    });
+    // var previousVisibilityState = "visible";
+    // //confirmation message before generate new order
+    // var form = document.getElementById('form_order');
+    // form.addEventListener('submit', function (event) {
+    //     var confirmation = confirm("Are you sure you want to generate a new order?");
+    //     if (!confirmation) {
+    //         event.preventDefault();
+    //     } else {
+    //         refresh = 1;
+    //     }
+    // });
 
     //event when user refocus on the page
     document.onvisibilitychange = function () {
@@ -91,6 +115,70 @@
         }
         previousVisibilityState = document.visibilityState;
     }
+
+    function showModal(event) {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "block";
+        console.log(event.target);
+        document.getElementById("form_team").value = event.target.dataset.teamId;
+        document.getElementById("form_team_name").value = event.target.dataset.teamName;
+        document.getElementById("form_run").value = event.target.dataset.run;
+        document.getElementById("form_score").value = 0;
+        document.getElementById("form_time").value = 999;
+    }
+
+    function hideModal(event) {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+
+    function addRun(team, run, score, time, csrf_token) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/admin/stats/run/add/", true);
+
+        // Send the proper header information along with the request
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = () => {
+            // Call a function when the state changes.
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                // Request finished. Do processing here.
+                window.location.reload();
+            }
+        };
+        xhr.send("team=" + team + "&num_run=" + run + "&score=" + score + "&time=" + time + "&csrfmiddlewaretoken=" + csrf_token);
+        // xhr.send(new Int8Array());
+        // xhr.send(document);
+
+    }
+
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        hideModal();
+    }
+
+
+    function processForm(e) {
+        if (e.preventDefault) e.preventDefault();
+
+        /* do what you want with the form */
+
+        // You must return false to prevent the default form behavior
+        addRun(document.getElementById("form_team").value, document.getElementById("form_run").value, document.getElementById("form_score").value, document.getElementById("form_time").value, document.getElementsByName("csrfmiddlewaretoken")[1].value);
+        return false;
+    }
+
+    var form = document.getElementById('addRun_form');
+    if (form.attachEvent) {
+        form.attachEvent("submit", processForm);
+    } else {
+        form.addEventListener("submit", processForm);
+    }
+
 </script>
 
 
