@@ -96,17 +96,18 @@
 
 
 <script>
-    // var previousVisibilityState = "visible";
-    // //confirmation message before generate new order
-    // var form = document.getElementById('form_order');
-    // form.addEventListener('submit', function (event) {
-    //     var confirmation = confirm("Are you sure you want to generate a new order?");
-    //     if (!confirmation) {
-    //         event.preventDefault();
-    //     } else {
-    //         refresh = 1;
-    //     }
-    // });
+    
+    var previousVisibilityState = "visible";
+    //confirmation message before generate new order
+    var form = document.getElementById('form_order');
+    form.addEventListener('submit', function (event) {
+        var confirmation = confirm("Are you sure you want to generate a new order?");
+        if (!confirmation) {
+            event.preventDefault();
+        } else {
+            refresh = 1;
+        }
+    });
 
     //event when user refocus on the page
     document.onvisibilitychange = function () {
