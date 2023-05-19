@@ -5,10 +5,10 @@
 
 <div class="container">
 
-    <h1>Team Order</h1>
+    <h1 class="title_team_order">Team Order</h1>
 
-    <div>
-        <table>
+    <div class="table_container">
+        <table class="run_table">
             <tr>
                 <th>Order</th>
                 <th>Team</th>
@@ -24,18 +24,18 @@
                 <td>
                     {% if team.runs.0 %}
                     <form action="/admin/stats/run/{{ team.runs.0.id }}/change/" target="_blank">
-                        <input type="submit" style="background-color:green;"
+                        <input type="submit" class="button_run green"
                             value="{{ team.runs.0.time }} | {{ team.runs.0.score }}">
                     </form>
                     {% else %}
-                    <button style="background-color:red;" onclick="showModal(event)" data-team-id="{{ team.id }}"
+                    <button class="button_run red" onclick="showModal(event)" data-team-id="{{ team.id }}"
                         data-team-name="{{team }}" data-run=1>Add run</button>
                     {% endif %}
                 </td>
                 <td>
                     {% if team.runs.1 %}
                     <form action="/admin/stats/run/{{ team.runs.1.id }}/change/" target="_blank">
-                        <input type="submit" style="background-color:green;"
+                        <input type="submit" class="button_run green"
                             value="{{ team.runs.1.time }} | {{ team.runs.1.score }}">
                     </form>
                     {% else %}
@@ -44,7 +44,7 @@
                         <input type="hidden" name="num_run" value="2">
                         <input type="submit" style="background-color:red;" value="Add run">
                     </form> -->
-                    <button style="background-color:red;" onclick="showModal(event)" data-team-id="{{ team.id }}"
+                    <button class="button_run red" onclick="showModal(event)" data-team-id="{{ team.id }}"
                         data-team-name="{{team }}" data-run=2>Add run</button>
                     {% endif %}
                 </td>
@@ -54,18 +54,20 @@
 
     </div>
 
-    <form action="/stats/rankings/" method="get">
+    <!-- <form action="/stats/rankings/" method="get">
         <input type="submit" value="Rankings">
     </form>
 
     <form action="/stats/institutionRankings/" method="get">
         <input type="submit" value="Institution Rankings">
-    </form>
+    </form> -->
 
+    <div class="div_generate_order">
     <form id="form_order" action="/stats/generateOrder/" method="post">
         {% csrf_token %}
-        <input type="submit" value="Generate Order">
+        <input type="submit" class="generate_order_button" value="Generate Order">
     </form>
+    </div>
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
