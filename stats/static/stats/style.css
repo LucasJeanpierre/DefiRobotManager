@@ -115,14 +115,24 @@ body {
 }
 
 .custom_button {
-    background-color: #4CAF50;
+    background-color: lightblue;
     border: none;
-    color: white;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    color: black;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    transition-duration: 0.5s;
+}
+
+.custom_button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: black;
 }
 
 
@@ -184,6 +194,11 @@ body {
 .main_title a {
     color: #fff;
     text-shadow: 2px 2px black;
+    transition-duration: 0.5s;
+}
+
+.main_title a:hover {
+    color: rgb(182, 182, 182);
 }
 
 a {
@@ -199,6 +214,10 @@ tr {
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 20px;
     padding: 10px;
+}
+
+.run_table tr:nth-child(even) {
+    background-color: #363333;
 }
 
 .run_table td {
@@ -241,6 +260,14 @@ tr {
 
 .table_container {
     padding: 20px;
+    overflow: hidden;
+    max-height: 55px;
+}
+
+
+.table_container.full {
+    max-height: 1000px;
+    transition: max-height 15s linear;
 }
 
 .div_generate_order {
@@ -282,6 +309,7 @@ tr {
     position: relative;
     z-index: 1;
 }
+
 .generate_order_button i {
     position: absolute;
     inset: 0;
