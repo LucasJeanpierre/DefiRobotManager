@@ -115,14 +115,24 @@ body {
 }
 
 .custom_button {
-    background-color: #4CAF50;
+    background-color: lightblue;
     border: none;
-    color: white;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    color: black;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    transition-duration: 0.5s;
+}
+
+.custom_button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: black;
 }
 
 
@@ -184,6 +194,11 @@ body {
 .main_title a {
     color: #fff;
     text-shadow: 2px 2px black;
+    transition-duration: 0.5s;
+}
+
+.main_title a:hover {
+    color: rgb(182, 182, 182);
 }
 
 a {
