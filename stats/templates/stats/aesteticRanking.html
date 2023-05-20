@@ -9,7 +9,7 @@
             <p id="podium_second" class="podium__city" data-animationClass="podium__city-animation">
                 {% for aestetic_ranking in aestetic_rankings %}
                     {% if aestetic_ranking.rank == 2 %}
-                        {{ aestetic_ranking.team }} <br>
+                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }}
                     {% endif %}
                 {% endfor %}
             </p>
@@ -21,7 +21,7 @@
             <p id="podium_first" class="podium__city" data-animationClass="podium__city-animation">
                 {% for aestetic_ranking in aestetic_rankings %}
                     {% if aestetic_ranking.rank == 1 %}
-                        {{ aestetic_ranking.team }} <br>
+                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }}
                     {% endif %}
                 {% endfor %}
             </p>
@@ -33,7 +33,7 @@
             <p id="podium_third" class="podium__city" data-animationClass="podium__city-animation">
                 {% for aestetic_ranking in aestetic_rankings %}
                     {% if aestetic_ranking.rank == 3 %}
-                        {{ aestetic_ranking.team }} <br>
+                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }}
                     {% endif %}
                 {% endfor %}
             </p>

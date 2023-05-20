@@ -9,7 +9,7 @@
             <p id="podium_second" class="podium__city" data-animationClass="podium__city-animation">
                 {% for ranking in content.rankings %}
                     {% if ranking.rank == 2 %}
-                        {{ ranking.team }} <br>
+                        {{ ranking.team.name }} <br> {{ ranking.team.institution }}
                     {% endif %}
                 {% endfor %}
             </p>
@@ -21,7 +21,7 @@
             <p id="podium_first" class="podium__city" data-animationClass="podium__city-animation">
                 {% for ranking in content.rankings %}
                     {% if ranking.rank == 1 %}
-                        {{ ranking.team }} <br>
+                        {{ ranking.team.name }} <br> {{ ranking.team.institution }}
                     {% endif %}
                 {% endfor %}
             </p>
@@ -33,7 +33,7 @@
             <p id="podium_third" class="podium__city" data-animationClass="podium__city-animation">
                 {% for ranking in content.rankings %}
                     {% if ranking.rank == 3 %}
-                        {{ ranking.team }} <br>
+                        {{ ranking.team.name }} <br> {{ ranking.team.institution }}
                     {% endif %}
                 {% endfor %}
             </p>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <button onclick="showRest()">
+    <button class="custom_button" onclick="showRest()">
         Show rest
     </button>
 

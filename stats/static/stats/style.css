@@ -45,6 +45,7 @@ body {
     margin: 0 auto;
     letter-spacing: .15em;
     visibility: hidden;
+    font-size: 35px;
 }
 
 .podium__city-animation {
@@ -378,4 +379,14 @@ tr {
     100% {
         box-shadow: #27272c;
     }
+}
+
+/* footer fixed on botton left */
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: left;
 }

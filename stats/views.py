@@ -25,9 +25,9 @@ def getScores():
         #for each runs add the bonus time
         for i, run in enumerate(runs):
             if (run.score == 160) and (i < 8):
-                scores.append({"team" : run.team, "score" : run.score + 40 - i*5, "time" : run.time})
+                scores.append({"team" : run.team, "score" : run.score + 40 - i*5, "time" : run.time, "num_run" : run.num_run})
             else:
-                scores.append({"team" : run.team, "score" : run.score, "time" : run.time})
+                scores.append({"team" : run.team, "score" : run.score, "time" : run.time, "num_run" : run.num_run})
 
         scores_list.append(scores)
 
@@ -49,6 +49,7 @@ def getRankings():
     for team in teams:
         best_score = -1
         best_time = 1000
+        best_num_run = 0
         found = False
         for scores in scores_list:
             for score in scores:
@@ -56,10 +57,11 @@ def getRankings():
                     if score["score"] > best_score or (score["score"] == best_score and score["time"] < best_time):
                         best_score = score["score"]
                         best_time = score["time"]
+                        best_num_run = score["num_run"]
                         found = True
                     break
         if found:
-            best_scores.append({"team": team, "score" : best_score, "time" : best_time})
+            best_scores.append({"team": team, "score" : best_score, "time" : best_time, "num_run" : best_num_run})
 
 
     #get the second best score for each team if it exists
@@ -70,12 +72,14 @@ def getRankings():
         team = score["team"]
 
         #get the num_rum of the best score
-        num_run = Run.objects.filter(team=team, score=score["score"], time=score["time"])[0].num_run
+        num_run = score["num_run"]
         other_num_run = 1 if num_run == 2 else 2
 
         #get the second best score
-        second_best_score = Run.objects.filter(team=team, num_run=other_num_run).order_by('-score', 'time')[0]
-        second_best_scores.append({"team": team, "score" : second_best_score.score, "time" : second_best_score.time})
+        second_best_score_request = Run.objects.filter(team=team, num_run=other_num_run).order_by('-score', 'time')
+        if (len(second_best_score_request) > 0):
+            second_best_score = second_best_score_request[0]
+            second_best_scores.append({"team": team, "score" : second_best_score.score, "time" : second_best_score.time})
 
     #sort the second best scores by score and time reversed
     second_best_scores.sort(key=lambda x: (x["score"], -x["time"]), reverse=True)
