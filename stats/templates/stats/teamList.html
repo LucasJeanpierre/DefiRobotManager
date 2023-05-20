@@ -7,7 +7,7 @@
 
     <h1 class="title_team_order">Team Order</h1>
 
-    <div class="table_container">
+    <div class="table_container full" id="team_order_container">
         <table class="run_table">
             <tr>
                 <th>Order</th>
@@ -65,7 +65,7 @@
     <div class="div_generate_order">
     <form id="form_order" action="/stats/generateOrder/" method="post">
         {% csrf_token %}
-        <button class="generate_order_button"><span>Generate order</span><i></i></button>
+        <button class="generate_order_button" id="generate_button"><span>{% if content.reveal == "true" %}Reveal{% else %}Generate order{% endif %}</span><i></i></button>
     </form>
     </div>
 
@@ -98,11 +98,23 @@
 
 
 <script>
+
     
     var previousVisibilityState = "visible";
     //confirmation message before generate new order
     var form = document.getElementById('form_order');
     form.addEventListener('submit', function (event) {
+        //check the value of the button
+        if (document.getElementById("generate_button").children[0].textContent == "Reveal") {
+            revealTeamOrder();
+            event.preventDefault();
+            
+            //redirect to the same page after 20 seconds
+            setTimeout(function () {
+                window.location.href = "/stats/teamList/";
+            }, 10000);
+            return false;
+        }
         var confirmation = confirm("Are you sure you want to generate a new order?");
         if (!confirmation) {
             event.preventDefault();
@@ -180,6 +192,16 @@
         form.attachEvent("submit", processForm);
     } else {
         form.addEventListener("submit", processForm);
+    }
+
+    function revealTeamOrder() {
+        var container = document.getElementById("team_order_container");
+        container.classList.add("full");
+    }
+
+    var generateButton = document.getElementById("generate_button").children[0];
+    if (generateButton.textContent == "Reveal") {
+        document.getElementById("team_order_container").classList.remove("full");
     }
 
 </script>

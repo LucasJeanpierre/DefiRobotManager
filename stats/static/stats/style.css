@@ -216,6 +216,10 @@ tr {
     padding: 10px;
 }
 
+.run_table tr:nth-child(even) {
+    background-color: #363333;
+}
+
 .run_table td {
     text-align: center;
 }
@@ -256,6 +260,14 @@ tr {
 
 .table_container {
     padding: 20px;
+    overflow: hidden;
+    max-height: 55px;
+}
+
+
+.table_container.full {
+    max-height: 1000px;
+    transition: max-height 15s linear;
 }
 
 .div_generate_order {
@@ -297,6 +309,7 @@ tr {
     position: relative;
     z-index: 1;
 }
+
 .generate_order_button i {
     position: absolute;
     inset: 0;

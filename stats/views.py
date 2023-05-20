@@ -288,7 +288,7 @@ def generateOrder(request):
             team.order = order[i]
             team.save()
         
-        return redirect('/stats/teamList')
+        return redirect('/stats/teamList/?reveal=true')
     
     #return an error 500
     return HttpResponse("Method not allowed",status=500)
@@ -300,6 +300,9 @@ def teamList(request):
 
     #get all runs
     runs = Run.objects.all()
+
+    #get the reveal get parameter
+    reveal = request.GET.get('reveal', False)
 
     #link each team to its runs
     for team in teams:
@@ -318,7 +321,7 @@ def teamList(request):
                         team.runs.append(None)
                         team.runs.append(run)
 
-    content = {"teams": teams}
+    content = {"teams": teams, "reveal": reveal}
 
     return render(request, 'stats/teamList.html', {'content': content})
 
