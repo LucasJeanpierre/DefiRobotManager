@@ -73,20 +73,35 @@
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <form action="/admin/stats/run/add/" method="post" id="addRun_form">
+            <form action="/admin/stats/run/add/" method="post" id="addRun_form" class="form">
+                <div class="title">
+                    Add run
+                </div>
                 {% csrf_token %}
                 <span class="close">&times;</span>
-                <label for="team_name">Team name</label>
-                <input type="text" name="team_name" id="form_team_name" disabled value="">
                 <input type="hidden" name="team" id="form_team" value="">
-                <label for="run">Run</label>
-                <input type="number" name="num_run" id="form_run" disabled value="">
-                <label for="score">Score</label>
-                <input type="number" name="score" id="form_score" value="">
-                <label for="time">Time</label>
-                <input type="number" step="0.01" name="time" id="form_time" value="">
+                <div class="input-container ic1">
+                    <input class="input" type="text" name="team_name" id="form_team_name" disabled value="">
+                    <div class="cut"></div>
+                    <label for="team_name" class="placeholder">Team name</label>
+                </div>
+                <div class="input-container ic1">
+                    <input class="input" type="number" name="num_run" id="form_run" disabled value="">
+                    <div class="cut"></div>
+                    <label for="num_run" class="placeholder">Num run</label>
+                </div>
+                <div class="input-container ic1">
+                    <input class="input" type="number" name="score" id="form_score" value="" placeholder=" ">
+                    <div class="cut"></div>
+                    <label for="score" class="placeholder">Score</label>
+                </div>
+                <div class="input-container ic1">
+                    <input class="input" type="number" step="0.01" name="time" id="form_time" value="">
+                    <div class="cut"></div>
+                    <label for="time" class="placeholder">Time</label>
+                </div>
                 <!-- <button onclick="addRun(event)">Add run</button> -->
-                <input type="submit" value="Add run">
+                <input type="submit" class="submit" value="Add run">
             </form>
         </div>
 
