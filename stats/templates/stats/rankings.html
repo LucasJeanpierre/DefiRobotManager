@@ -9,7 +9,7 @@
             <p id="podium_second" class="podium__city" data-animationClass="podium__city-animation">
                 {% for ranking in content.rankings %}
                     {% if ranking.rank == 2 %}
-                        {{ ranking.team.name }} <br> {{ ranking.team.institution }}
+                        {{ ranking.team.name }} <br> {{ ranking.team.institution }} <br>
                     {% endif %}
                 {% endfor %}
             </p>
@@ -21,7 +21,7 @@
             <p id="podium_first" class="podium__city" data-animationClass="podium__city-animation">
                 {% for ranking in content.rankings %}
                     {% if ranking.rank == 1 %}
-                        {{ ranking.team.name }} <br> {{ ranking.team.institution }}
+                        {{ ranking.team.name }} <br> {{ ranking.team.institution }} <br> 
                     {% endif %}
                 {% endfor %}
             </p>
@@ -33,7 +33,7 @@
             <p id="podium_third" class="podium__city" data-animationClass="podium__city-animation">
                 {% for ranking in content.rankings %}
                     {% if ranking.rank == 3 %}
-                        {{ ranking.team.name }} <br> {{ ranking.team.institution }}
+                        {{ ranking.team.name }} <br> {{ ranking.team.institution }} <br>
                     {% endif %}
                 {% endfor %}
             </p>
@@ -59,7 +59,7 @@
         function showRest() {
             var x = document.getElementById("ranking_rest");
             if (x.style.display === "none") {
-                x.style.display = "block";
+                x.style.display = "flex";
             } else {
                 x.style.display = "none";
             }

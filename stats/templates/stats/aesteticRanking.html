@@ -9,7 +9,7 @@
             <p id="podium_second" class="podium__city" data-animationClass="podium__city-animation">
                 {% for aestetic_ranking in aestetic_rankings %}
                     {% if aestetic_ranking.rank == 2 %}
-                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }}
+                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }} <br>
                     {% endif %}
                 {% endfor %}
             </p>
@@ -21,7 +21,7 @@
             <p id="podium_first" class="podium__city" data-animationClass="podium__city-animation">
                 {% for aestetic_ranking in aestetic_rankings %}
                     {% if aestetic_ranking.rank == 1 %}
-                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }}
+                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }} <br>
                     {% endif %}
                 {% endfor %}
             </p>
@@ -33,7 +33,7 @@
             <p id="podium_third" class="podium__city" data-animationClass="podium__city-animation">
                 {% for aestetic_ranking in aestetic_rankings %}
                     {% if aestetic_ranking.rank == 3 %}
-                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }}
+                        {{ aestetic_ranking.team.name }} <br> {{ aestetic_ranking.team.institution }} <br>
                     {% endif %}
                 {% endfor %}
             </p>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <button onclick="showRest()">
+    <button class="custom_button" onclick="showRest()">
         Show rest
     </button>
 
@@ -59,7 +59,7 @@
         function showRest() {
             var x = document.getElementById("ranking_rest");
             if (x.style.display === "none") {
-                x.style.display = "block";
+                x.style.display = "flex";
             } else {
                 x.style.display = "none";
             }

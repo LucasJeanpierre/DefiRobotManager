@@ -17,19 +17,20 @@ def getScores():
 
     scores_list = []
 
-    for i_run in range(1, max_num_runs+1):
-        runs = Run.objects.filter(num_run=i_run).order_by('-score', 'time')
+    if max_num_runs:
+        for i_run in range(1, max_num_runs+1):
+            runs = Run.objects.filter(num_run=i_run).order_by('-score', 'time')
 
-        scores = []
+            scores = []
 
-        #for each runs add the bonus time
-        for i, run in enumerate(runs):
-            if (run.score == 160) and (i < 8):
-                scores.append({"team" : run.team, "score" : run.score + 40 - i*5, "time" : run.time, "num_run" : run.num_run})
-            else:
-                scores.append({"team" : run.team, "score" : run.score, "time" : run.time, "num_run" : run.num_run})
+            #for each runs add the bonus time
+            for i, run in enumerate(runs):
+                if (run.score == 160) and (i < 8):
+                    scores.append({"team" : run.team, "score" : run.score + 40 - i*5, "time" : run.time, "num_run" : run.num_run})
+                else:
+                    scores.append({"team" : run.team, "score" : run.score, "time" : run.time, "num_run" : run.num_run})
 
-        scores_list.append(scores)
+            scores_list.append(scores)
 
     return scores_list
 
@@ -63,6 +64,8 @@ def getRankings():
         if found:
             best_scores.append({"team": team, "score" : best_score, "time" : best_time, "num_run" : best_num_run})
 
+    print("besst score : ", best_scores)
+
 
     #get the second best score for each team if it exists
 
@@ -84,6 +87,7 @@ def getRankings():
     #sort the second best scores by score and time reversed
     second_best_scores.sort(key=lambda x: (x["score"], -x["time"]), reverse=True)
 
+    print("second best score : ", second_best_scores)
 
 
     aestetic_scores = AesteticScores.objects.all()
@@ -105,7 +109,6 @@ def getRankings():
     rankings = []
     #create a list of the rankings
     for score in best_scores:
-        bool_ex_aequo = False
         ranking = {"team": Team.objects.get(id=score['team'].id), "score": score['score'], "time": score['time']}
 
         #handle ex aequo
@@ -119,6 +122,7 @@ def getRankings():
         
         rankings.append(ranking)
 
+    print("rankings : ", rankings)
 
     #create a list with the number of teams for each rank
     num_teams = []
@@ -127,8 +131,6 @@ def getRankings():
             num_teams.append(1)
         else:
             num_teams[ranking["rank"]-1] += 1
-
-    print(num_teams)
 
     for i in num_teams:
         if i > 1:
@@ -261,6 +263,11 @@ def aesteticRankings(request):
         else:
             aestetic_ranking["rank"] = i+1
 
+    #check the max score
+    max_score = aestetic_rankings[0]["score"]
+
+    if (max_score == 0):
+        aestetic_rankings = {}
 
     return render(request, 'stats/aesteticRanking.html', {'aestetic_rankings': aestetic_rankings})
 

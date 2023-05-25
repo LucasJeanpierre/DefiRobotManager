@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <button onclick="showRest()">
+    <button class="custom_button" onclick="showRest()">
         Show rest
     </button>
 
@@ -59,7 +59,7 @@
         function showRest() {
             var x = document.getElementById("ranking_rest");
             if (x.style.display === "none") {
-                x.style.display = "block";
+                x.style.display = "flex";
             } else {
                 x.style.display = "none";
             }
