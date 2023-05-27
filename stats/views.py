@@ -64,8 +64,6 @@ def getRankings():
         if found:
             best_scores.append({"team": team, "score" : best_score, "time" : best_time, "num_run" : best_num_run})
 
-    print("besst score : ", best_scores)
-
 
     #get the second best score for each team if it exists
 
@@ -87,7 +85,9 @@ def getRankings():
     #sort the second best scores by score and time reversed
     second_best_scores.sort(key=lambda x: (x["score"], -x["time"]), reverse=True)
 
-    print("second best score : ", second_best_scores)
+    #add rank to the second best scores
+    for i, score in enumerate(second_best_scores):
+        score["rank"] = i+1
 
 
     aestetic_scores = AesteticScores.objects.all()
@@ -122,37 +122,40 @@ def getRankings():
         
         rankings.append(ranking)
 
-    print("rankings : ", rankings)
 
     #create a list with the number of teams for each rank
     num_teams = []
-    for ranking in rankings:
-        if len(num_teams) < ranking["rank"]:
-            num_teams.append(1)
-        else:
-            num_teams[ranking["rank"]-1] += 1
+    ranks = [0 for i in range(len(rankings))]
 
-    for i in num_teams:
-        if i > 1:
-            current_rank = rankings[i-1]["rank"]
-            #handle ex aequo, update the rank of the teams according the index of the team in the second best scores list
-            ex_eaquo_teams = rankings[current_rank-1:current_rank-1+i]
+    for i in range(1, len(rankings)+1):
+        ranks[i-1] = rankings[i-1]["rank"]
 
-            for team in ex_eaquo_teams:
-                if team["rank"] == current_rank:
-                    #get the index of the team in the second best scores list
-                    for j, score in enumerate(second_best_scores):
-                        if score["team"].id == team["team"].id:
-                            index = j
-                            break
-                    team["rank"] = current_rank + index
-            
-            #sort the ex aequo teams by rank
-            ex_eaquo_teams.sort(key=lambda x: x["rank"])
+    #print(ranks)
+    for i in range(1, len(rankings)+1):
+        num_teams.append(ranks.count(i))
 
-            #update the rankings
-            for j, team in enumerate(ex_eaquo_teams):
-                rankings[current_rank-1+j] = team
+    #print(num_teams)
+    
+    #solve ex aequo if possible
+    for i, nb_teams in enumerate(num_teams):
+        if (nb_teams > 1):
+            #get the teams with the same rank
+            same_rank_teams = [ranking for ranking in rankings if ranking["rank"] == i+1]
+           # print("same team rank", same_rank_teams)
+
+            #get the second best score of the teams with the same rank
+            second_scores = [score for score in second_best_scores if score["team"].id in [team["team"].id for team in same_rank_teams]]
+            #sort the second best scores by score and time reversed
+            second_scores.sort(key=lambda x: (x["score"], -x["time"]), reverse=True)
+            #print("second scores", second_scores)
+
+            #solve ex aequo with the rank of the second best score
+            for i in range(i, i+nb_teams):
+                rankings[i]["rank"] += second_scores.index([score for score in second_scores if score["team"].id == rankings[i]["team"].id][0])
+
+    #sort the rankings by rank
+    rankings.sort(key=lambda x: x["rank"])
+
             
     return rankings
 
