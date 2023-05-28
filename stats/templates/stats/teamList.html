@@ -153,8 +153,10 @@
         document.getElementById("form_team").value = event.target.dataset.teamId;
         document.getElementById("form_team_name").value = event.target.dataset.teamName;
         document.getElementById("form_run").value = event.target.dataset.run;
-        document.getElementById("form_score").value = 0;
+        document.getElementById("form_score").focus();
+        document.getElementById("form_score").value = "";
         document.getElementById("form_time").value = 999;
+
     }
 
     function hideModal(event) {
