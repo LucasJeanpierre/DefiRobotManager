@@ -50,7 +50,7 @@
     <div class="ranking" id="ranking_rest" style="display:none">
         {% for ranking in content.rankings %}
         {% if ranking.rank > -1 %}
-        <p>{{ ranking.rank }} : {{ ranking.team }} avec {{ ranking.score }} points et un temsp de {{ ranking.time }}</p>
+        <p>{{ ranking.rank }} : {{ ranking.team }} avec {{ ranking.score }} points et un temps de {{ ranking.time }}</p>
         {% endif %}
         {% endfor %}
     </div>

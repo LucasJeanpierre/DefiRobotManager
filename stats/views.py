@@ -26,7 +26,11 @@ def getScores():
             #for each runs add the bonus time
             for i, run in enumerate(runs):
                 if (run.score == 160) and (i < 8):
-                    scores.append({"team" : run.team, "score" : run.score + 40 - i*5, "time" : run.time, "num_run" : run.num_run})
+                    #check for ex aequo
+                    if i > 0 and run.time == runs[i-1].time:
+                        scores.append({"team" : run.team, "score" : scores[i-1]["score"], "time" : run.time, "num_run" : run.num_run})
+                    else:
+                        scores.append({"team" : run.team, "score" : run.score + 40 - i*5, "time" : run.time, "num_run" : run.num_run})
                 else:
                     scores.append({"team" : run.team, "score" : run.score, "time" : run.time, "num_run" : run.num_run})
 

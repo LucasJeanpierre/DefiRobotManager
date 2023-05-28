@@ -50,7 +50,7 @@
     <div class="ranking" id="ranking_rest" style="display: none;">
         {% for institutionRanking in institutionRankings %}
         {% if institutionRanking.rank > -1 %}
-        <p>{{ institutionRanking.rank }} : {{ institutionRanking.institution.name }} avec une moyenne de {{ institutionRanking.avg_score }} points et {{ institutionRanking.avg_time }} s </p>
+        <p>{{ institutionRanking.rank }} : {{ institutionRanking.institution.name }} avec une moyenne de {{ institutionRanking.avg_score|floatformat:2 }} points et {{ institutionRanking.avg_time|floatformat:2 }} s </p>
         {% endif %}
         {% endfor %}
     </div>

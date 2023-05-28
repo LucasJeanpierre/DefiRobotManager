@@ -7,7 +7,7 @@
     
     <h1>Round {{round}}</h1>
 
-    <div class="ranking">
+    <div class="ranking" style="height: 100%;">
         {% for ranking in scores %}
             <p>{{ ranking.rank }} : {{ ranking.team }} avec {{ ranking.score }} points et un temsp de {{ ranking.time }}</p>
         {% endfor %}
