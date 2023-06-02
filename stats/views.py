@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Max
+from django.contrib.auth.decorators import login_required
 import random
 
 from .models import Institution, Team, AesteticScores, Run
@@ -294,22 +295,27 @@ def round(request):
 
 
 def generateOrder(request):
-    #if the request is a POST request
-    if request.method == 'POST':
-        #get all teams
-        teams = Team.objects.all()
-
-        order = [i for i in range(1, len(teams)+1)]
-        random.shuffle(order)
-
-        for i, team in enumerate(teams):
-            team.order = order[i]
-            team.save()
-        
-        return redirect('/stats/teamList/?reveal=true')
+    #if the request is not a POST request
+    if request.method != 'POST':
+        return HttpResponse("Method not allowed",status=500)
     
-    #return an error 500
-    return HttpResponse("Method not allowed",status=500)
+    #if user is not authenticated
+    if not request.user.is_authenticated:
+        return HttpResponse("Unauthorized",status=401)
+
+
+    teams = Team.objects.all()
+
+    order = [i for i in range(1, len(teams)+1)]
+    random.shuffle(order)
+
+    for i, team in enumerate(teams):
+        team.order = order[i]
+        team.save()
+    
+    return redirect('/stats/teamList/?reveal=true')
+
+    
 
 
 def teamList(request):
